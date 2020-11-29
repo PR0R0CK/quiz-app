@@ -1,32 +1,133 @@
-import React, { useState } from "react";
-import { FlatList, SafeAreaView, StatusBar, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import React, { useState } from 'react';
+import { Alert, SafeAreaView, View, FlatList, StyleSheet, Text, StatusBar, TouchableOpacity } from 'react-native';
 
 const DATA = [
     {
-        id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba",
-        title: "First Item",
+        id: '1',
+        title: 'First Item',
+        description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. ' +
+            'Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, ' +
+            'when an unknown printer took a galley of type and scrambled it to make ' +
+            'a type specimen book.It has survived not only five centuries, but also the leap ' +
+            'into electronic typesetting, remaining essentially unchanged.It was popularised ' +
+            'in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, ' +
+            'and more recently with desktop publishing software like Aldus PageMaker ' +
+            'including versions of Lorem Ipsum.'
     },
     {
-        id: "3ac68afc-c605-48d3-a4f8-fbd91aa97f63",
-        title: "Second Item",
+        id: '2',
+        title: 'Second Item',
+        description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. ' +
+            'Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, ' +
+            'when an unknown printer took a galley of type and scrambled it to make ' +
+            'a type specimen book.It has survived not only five centuries, but also the leap ' +
+            'into electronic typesetting, remaining essentially unchanged.It was popularised ' +
+            'in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, ' +
+            'and more recently with desktop publishing software like Aldus PageMaker ' +
+            'including versions of Lorem Ipsum.'
     },
     {
-        id: "58694a0f-3da1-471f-bd96-145571e29d72",
-        title: "Third Item",
+        id: '3',
+        title: 'Third Item',
+        description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. ' +
+            'Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, ' +
+            'when an unknown printer took a galley of type and scrambled it to make ' +
+            'a type specimen book.It has survived not only five centuries, but also the leap ' +
+            'into electronic typesetting, remaining essentially unchanged.It was popularised ' +
+            'in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, ' +
+            'and more recently with desktop publishing software like Aldus PageMaker ' +
+            'including versions of Lorem Ipsum.'
+    },
+    {
+        id: '4',
+        title: 'Fourth Item',
+        description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. ' +
+            'Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, ' +
+            'when an unknown printer took a galley of type and scrambled it to make ' +
+            'a type specimen book.It has survived not only five centuries, but also the leap ' +
+            'into electronic typesetting, remaining essentially unchanged.It was popularised ' +
+            'in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, ' +
+            'and more recently with desktop publishing software like Aldus PageMaker ' +
+            'including versions of Lorem Ipsum.'
+    },
+    {
+        id: '5',
+        title: 'Fiveth Item',
+        description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. ' +
+            'Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, ' +
+            'when an unknown printer took a galley of type and scrambled it to make ' +
+            'a type specimen book.It has survived not only five centuries, but also the leap ' +
+            'into electronic typesetting, remaining essentially unchanged.It was popularised ' +
+            'in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, ' +
+            'and more recently with desktop publishing software like Aldus PageMaker ' +
+            'including versions of Lorem Ipsum.'
+    },
+    {
+        id: '6',
+        title: 'Sixth Item',
+        description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. ' +
+            'Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, ' +
+            'when an unknown printer took a galley of type and scrambled it to make ' +
+            'a type specimen book.It has survived not only five centuries, but also the leap ' +
+            'into electronic typesetting, remaining essentially unchanged.It was popularised ' +
+            'in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, ' +
+            'and more recently with desktop publishing software like Aldus PageMaker ' +
+            'including versions of Lorem Ipsum.'
+    },
+    {
+        id: '7',
+        title: 'Seventh Item',
+        description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. ' +
+            'Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, ' +
+            'when an unknown printer took a galley of type and scrambled it to make ' +
+            'a type specimen book.It has survived not only five centuries, but also the leap ' +
+            'into electronic typesetting, remaining essentially unchanged.It was popularised ' +
+            'in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, ' +
+            'and more recently with desktop publishing software like Aldus PageMaker ' +
+            'including versions of Lorem Ipsum.'
+    },
+    {
+        id: '8',
+        title: 'Eighth Item',
+        description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. ' +
+            'Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, ' +
+            'when an unknown printer took a galley of type and scrambled it to make ' +
+            'a type specimen book.It has survived not only five centuries, but also the leap ' +
+            'into electronic typesetting, remaining essentially unchanged.It was popularised ' +
+            'in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, ' +
+            'and more recently with desktop publishing software like Aldus PageMaker ' +
+            'including versions of Lorem Ipsum.'
+    },
+    {
+        id: '9',
+        title: 'Nineth Item',
+        description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. ' +
+            'Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, ' +
+            'when an unknown printer took a galley of type and scrambled it to make ' +
+            'a type specimen book.It has survived not only five centuries, but also the leap ' +
+            'into electronic typesetting, remaining essentially unchanged.It was popularised ' +
+            'in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, ' +
+            'and more recently with desktop publishing software like Aldus PageMaker ' +
+            'including versions of Lorem Ipsum.'
     },
 ];
 
-const Item = ({ item, onPress, style }) => (
-    <TouchableOpacity onPress={onPress} style={[styles.item, style]}>
+function showAlert() {
+    Alert.alert("Alert!!!");
+}
+
+const Item = ({ item, style }) => (
+    <TouchableOpacity onPress={() => { showAlert() }} style={[styles.item, style]}>
         <Text style={styles.title}>{item.title}</Text>
+        <Text>{item.description}</Text>
     </TouchableOpacity>
 );
 
-export default function SelectableFlatList() {
+const SelectableFlatList = () => {
     const [selectedId, setSelectedId] = useState(null);
 
     const renderItem = ({ item }) => {
-        const backgroundColor = item.id === selectedId ? "#6e3b6e" : "#f9c2ff";
+        const backgroundColor = item.id === selectedId ? "grey" : "orange";
 
         return (
             <Item
@@ -53,7 +154,6 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         marginTop: StatusBar.currentHeight || 0,
-        backgroundColor: 'blue',
     },
     item: {
         padding: 20,
@@ -64,3 +164,4 @@ const styles = StyleSheet.create({
         fontSize: 32,
     },
 });
+export default SelectableFlatList;

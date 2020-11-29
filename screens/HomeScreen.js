@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { StyleSheet, Button, View, Text } from 'react-native';
-import SelectableFlatList from '../components/selectableFlatList';
+import SelectableFlatList from '../components/SelectableFlatList';
 
 export default function HomeScreen({ navigation }) {
     return (
-        <View>
+        <View style={{ flex: 1, justifyContent: 'center' }}>
             <View style={styles.header}>
                 <Text style={styles.title}>Home Screen</Text>
                 {/* <Button
@@ -12,7 +12,7 @@ export default function HomeScreen({ navigation }) {
                 title="Go to notifications"
             /> */}
             </View>
-            <View>
+            <View style={{ flex: 1, justifyContent: 'center' }}>
                 <SelectableFlatList></SelectableFlatList>
             </View>
         </View>
