@@ -74,16 +74,16 @@ function showAlert() {
 const Item = ({ item, style }) => (
     <TouchableOpacity onPress={() => { showAlert() }} style={[styles.item, style]}>
         <View style={{ flex: 1, flexDirection: 'row' }}>
-            <View style={/*styles.listRow,*/ { width: '38%', marginHorizontal: 2, height: '100%', backgroundColor: '#976D00', alignItems: 'center', justifyContent: 'center' }}>
+            <View style={styles.elementInRow}>
                 <Text style={{ color: 'white' }}>{item.nick}</Text>
             </View>
-            <View style={{ width: '12%', marginHorizontal: 2, height: '100%', backgroundColor: '#976D00', alignItems: 'center', justifyContent: 'center' }}>
+            <View style={styles.elementInRow}>
                 <Text style={{ color: 'white' }}>{item.point}</Text>
             </View>
-            <View style={{ width: '24%', marginHorizontal: 2, height: '100%', backgroundColor: '#976D00', alignItems: 'center', justifyContent: 'center' }}>
+            <View style={styles.elementInRow}>
                 <Text style={{ color: 'white' }}>{item.type}</Text>
             </View>
-            <View style={{ width: '23%', marginHorizontal: 2, height: '100%', backgroundColor: '#976D00', alignItems: 'center', justifyContent: 'center' }}>
+            <View style={styles.elementInRow}>
                 <Text style={{ color: 'white' }}>{item.date}</Text>
             </View>
 
@@ -131,10 +131,17 @@ const styles = StyleSheet.create({
         borderColor: '#FBB500'
     },
     listRow: {
-        height: '100%',
+        flex: 1,
         backgroundColor: 'red',
         alignItems: 'center',
         justifyContent: 'center',
+    },
+    elementInRow: {
+        flex: 1,
+        marginHorizontal: 2,
+        backgroundColor: '#976D00',
+        alignItems: 'center',
+        justifyContent: 'center'
     }
 });
 export default ResultsFlatList;

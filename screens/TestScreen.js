@@ -5,17 +5,13 @@ import ListOfAnswers from '../components/ListOfAnswers';
 
 export default function TestScreen({ navigation }) {
     return (
-        <View style={styles.center}>
+        <View style={styles.container}>
             <View style={styles.header}>
                 <Text style={styles.title}>Test Screen</Text>
-                {/* <Button
-                onPress={() => navigation.navigate('Notifications')}
-                title="Go to notifications"
-            /> */}
             </View>
-            <View style={styles.center}>
-                <View style={styles.center}>
-                    <View style={{ flexDirection: 'row', height: 50 }}>
+            <View style={styles.mainView}>
+                <View style={styles.container}>
+                    <View style={styles.nmbrOfQuestion}>
                         <Text style={styles.quest3of10}>Question 3 of 10
                     </Text>
                         <Text style={styles.timeRightTop}>Time: 28 sec
@@ -38,7 +34,7 @@ export default function TestScreen({ navigation }) {
                         </Text>
                     </View>
                 </View>
-                <View style={styles.center}>
+                <View style={styles.container}>
                     <ListOfAnswers></ListOfAnswers>
                 </View>
             </View>
@@ -47,14 +43,19 @@ export default function TestScreen({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-    center: {
+    container: {
         flex: 1,
         justifyContent: 'center'
     },
     header: {
-        height: 80,
+        flex: 1,
+        // height: 80,
         paddingTop: 38,
         backgroundColor: 'orange',
+    },
+    mainView: {
+        flex: 14,
+        justifyContent: 'center'
     },
     title: {
         textAlign: 'center',
@@ -75,12 +76,13 @@ const styles = StyleSheet.create({
         fontSize: 15,
     },
     time: {
+        flex: 1,
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
         alignContent: 'center',
         // backgroundColor: 'grey',
-        height: 50,
+        // height: 50,
     },
     centreText: {
         flex: 1,
@@ -88,16 +90,20 @@ const styles = StyleSheet.create({
         fontSize: 15,
     },
     question: {
-        flex: 1,
+        flex: 3,
         alignItems: 'center',
         justifyContent: 'center',
         flexDirection: 'column',
     },
     underTheQuestion: {
-        flex: 1,
+        flex: 2,
         paddingLeft: 16,
         paddingRight: 16,
         paddingBottom: 16,
         fontSize: 12
     },
+    nmbrOfQuestion: {
+        flex: 1,
+        flexDirection: 'row'
+    }
 });

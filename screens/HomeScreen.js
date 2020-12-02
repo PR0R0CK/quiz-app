@@ -4,7 +4,7 @@ import SelectableFlatList from '../components/SelectableFlatList';
 
 export default function HomeScreen({ navigation }) {
     return (
-        <View style={{ flex: 1, justifyContent: 'center' }}>
+        <View style={styles.container}>
             <View style={styles.header}>
                 <Text style={styles.title}>Home Screen</Text>
                 {/* <Button
@@ -12,7 +12,7 @@ export default function HomeScreen({ navigation }) {
                 title="Go to notifications"
             /> */}
             </View>
-            <View style={{ flex: 1, justifyContent: 'center' }}>
+            <View style={styles.listContainer}>
                 <SelectableFlatList></SelectableFlatList>
             </View>
         </View>
@@ -20,8 +20,13 @@ export default function HomeScreen({ navigation }) {
 }
 
 const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        justifyContent: 'center'
+    },
     header: {
-        height: 80,
+        flex: 1,
+        // height: 80,
         paddingTop: 38,
         backgroundColor: 'orange',
     },
@@ -30,5 +35,9 @@ const styles = StyleSheet.create({
         color: 'white',
         fontSize: 20,
         fontWeight: 'bold',
+    },
+    listContainer: {
+        flex: 14,
+        justifyContent: 'center'
     }
 })
