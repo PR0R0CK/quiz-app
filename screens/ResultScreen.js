@@ -1,8 +1,26 @@
 import * as React from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View, Text, RefreshControl } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
 import ResultsFlatList from '../components/ResultsFlatList';
 
+
 export default function ResultScreen({ navigation }) {
+    // const wait = (timeout) => {
+    //     return new Promise(resolve => {
+    //         setTimeout(resolve, timeout);
+    //     });
+    // }
+
+    // const [refreshing, setRefreshing] = React.useState(false);
+    // const onRefresh = React.useCallback(() => {
+    //     setRefreshing(true);
+
+    //     wait(2000).then(() => setRefreshing(false));
+    // }, []);
+
+    // refreshControl = {
+    //                 < RefreshControl refreshing = { refreshing } onRefresh = { onRefresh } />}
+
     return (
         <View style={styles.container}>
             <View style={styles.header}>
