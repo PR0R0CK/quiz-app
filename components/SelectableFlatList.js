@@ -114,6 +114,7 @@ const DATA = [
     },
 ];
 
+
 function showAlert() {
     Alert.alert("Alert!!!");
 }

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Alert, SafeAreaView, View, FlatList, StyleSheet, Text, StatusBar, TouchableOpacity } from 'react-native';
+import { Alert, SafeAreaView, View, FlatList, StyleSheet, Text, StatusBar, TouchableOpacity, RefreshControl } from 'react-native';
 
 const DATA = [
     {
@@ -67,9 +67,33 @@ const DATA = [
     },
 ];
 
+const results = [
+    {
+        "nick": 'Marek',
+        "score": 18,
+        "total": 20,
+        "type": 'historia',
+        "date": '2018-11-22'
+    },
+    {
+        "nick": 'Darek',
+        "score": 17,
+        "total": 20,
+        "type": 'biologia',
+        "date": '2018-11-24'
+    },
+];
+
 function showAlert() {
     Alert.alert("Alert!!!");
 }
+
+const wait = (timeout) => {
+    return new Promise(resolve => {
+        setTimeout(resolve, timeout);
+    });
+}
+
 
 const Item = ({ item, style }) => (
     <TouchableOpacity onPress={() => { showAlert() }} style={[styles.item, style]}>
@@ -78,7 +102,7 @@ const Item = ({ item, style }) => (
                 <Text style={{ color: 'white' }}>{item.nick}</Text>
             </View>
             <View style={styles.elementInRow}>
-                <Text style={{ color: 'white' }}>{item.point}</Text>
+                <Text style={{ color: 'white' }}>{item.score}/{item.total}</Text>
             </View>
             <View style={styles.elementInRow}>
                 <Text style={{ color: 'white' }}>{item.type}</Text>
@@ -106,13 +130,23 @@ const ResultsFlatList = () => {
         );
     };
 
+    const [refreshing, setRefreshing] = React.useState(false);
+    const onRefresh = React.useCallback(() => {
+        setRefreshing(true);
+
+        wait(2000).then(() => setRefreshing(false));
+    }, []);
+
     return (
         <SafeAreaView style={styles.container}>
             <FlatList
-                data={DATA}
+                data={results}
                 renderItem={renderItem}
                 keyExtractor={(item) => item.id}
                 extraData={selectedId}
+
+                refreshControl={
+                    < RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
             />
         </SafeAreaView>
     );
