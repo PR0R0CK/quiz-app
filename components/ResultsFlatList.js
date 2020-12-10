@@ -130,7 +130,7 @@ const ResultsFlatList = () => {
         );
     };
 
-    const [refreshing, setRefreshing] = React.useState(false);
+    const [refreshing, setRefreshing] = useState(false);
     const onRefresh = React.useCallback(() => {
         setRefreshing(true);
 

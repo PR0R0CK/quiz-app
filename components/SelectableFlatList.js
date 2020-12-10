@@ -240,8 +240,8 @@ export default function SelectableFlatList({ }) {
                 item={item}
                 // onPress={() => setSelectedId(item.id)}
                 // onPress={() => showAlert()}
-                // onPress={() => navigation.navigate('Test', { item })}
-                onPress={() => console.log({ item } + "#####" + item)}
+                onPress={() => navigation.navigate('Test', {testId: item.id})}
+                // onPress={() => console.log({ item } + "#####" + item.id)}
                 // onPress={() => navigation.navigate('Test', {
                 //     testId: test[0].id,
                 // })}

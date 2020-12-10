@@ -1,11 +1,149 @@
-import * as React from 'react';
-import { StyleSheet, Button, View, Text, FlatList, SafeAreaView, StatusBar, TouchableOpacity, Alert } from 'react-native';
+// import * as React from 'react';
+import React, { useState } from 'react';
+import { StyleSheet, View, Text, } from 'react-native';
 import ListOfAnswers from '../components/ListOfAnswers';
 
 
-export default function TestScreen({ navigation }) {
-    // const { item } = route.params;
-    // console.log('##' + tmp);
+const test = [{
+    "id": 0,
+    "name": "Zagadki",
+    "description": "Sprawdź swoją wiedzę w najciekawszych zagadkach.",
+    tasks:[{
+        "question": "Nie ma skrzydeł, a trzepocze, nie ma ust, a mamrocze," +
+            "nie ma nóg, a pląsa, nie ma zębów, a kąsa.",
+        "answers": [{
+            "content": "Wiatr",
+            "isCorrect": true
+        },
+            {
+                "content": "Woda",
+                "isCorrect": false
+            },
+            {
+                "content": "Ogień",
+                "isCorrect": false
+            },
+            {
+                "content": "Mucha",
+                "isCorrect": false
+            },
+        ],
+        "duration": 30
+    },
+        {
+            "question": "Nie oddycha, a żyje, nie pragnie, a wciąż pije.",
+            "answers": [{
+                "content": "Ryba",
+                "isCorrect": true
+            },
+                {
+                    "content": "Obelix",
+                    "isCorrect": false
+                },
+                {
+                    "content": "Trup",
+                    "isCorrect": false
+                },
+                {
+                    "content": "Mucha",
+                    "isCorrect": false
+                },
+            ],
+            "duration": 30
+        },
+    ],
+},
+    {
+        "id": 1,
+        "name": "Powiedzenia",
+        "description": "Sprawdź swoją wiedzę w powiedzeniach.",
+        tasks: [{
+            "question": "Siała baba mak...",
+            "answers": [{
+                "content": "...dziadek wiedział",
+                "isCorrect": false
+            },
+                {
+                    "content": "...i zasiała koguta",
+                    "isCorrect": false
+                },
+                {
+                    "content": "...nie wiedziała jak",
+                    "isCorrect": true
+                },
+                {
+                    "content": "...a mucha lata koło brzucha",
+                    "isCorrect": false
+                },
+            ],
+            "duration": 30
+        },
+            {
+                "question": "Nie oddycha, a żyje, nie pragnie, a wciąż pije.",
+                "answers": [{
+                    "content": "Ryba",
+                    "isCorrect": true
+                },
+                    {
+                        "content": "Obelix",
+                        "isCorrect": false
+                    },
+                    {
+                        "content": "Trup",
+                        "isCorrect": false
+                    },
+                    {
+                        "content": "Mucha",
+                        "isCorrect": false
+                    },
+                ],
+                "duration": 30
+            },
+        ],
+    },
+];
+
+const wait = (timeout) => {
+    return new Promise(resolve => {
+        setTimeout(resolve, timeout);
+    });
+};
+
+export default function TestScreen({ navigation, route }) {
+
+    const testId = route.params.testId;
+
+    let questionNmbr = 0;
+    // let questionDuration = test[testId].tasks[questionNmbr].duration;
+    let questionDuration = 5;
+    const nmbrOfQuestions = test[testId].tasks.length;
+    const question = test[testId].tasks[questionNmbr].question;
+    const everyAnswer = test[testId].tasks[questionNmbr].answers;
+
+    // console.log(testId);
+    // console.log(test[testId].tasks[0].question);
+
+
+    const [questionDurationHook, setQuestionDurationHook] = useState(questionDuration);
+    function showQuestionDuration() {
+        while (questionDurationHook > -1) {
+            wait(1000).then(() => setQuestionDurationHook(questionDurationHook - 1));
+            return questionDurationHook;
+        }
+        wait(1000).then(() => setQuestionDurationHook(questionDuration));
+        return "End of time!";
+    }
+
+  const checkAnswer = () => {
+
+  }
+
+
+    function numberOfQuestion(nmbr: questionNmbr) {
+        return  questionNmbr < nmbrOfQuestions ? questionNmbr+1 : "Nan";
+    }
+
+    // const [modalVisible, setModalVisible] = useState(false);
     return (
         <View style={styles.container}>
             <View style={styles.header}>
@@ -14,30 +152,24 @@ export default function TestScreen({ navigation }) {
             <View style={styles.mainView}>
                 <View style={styles.container}>
                     <View style={styles.nmbrOfQuestion}>
-                        <Text style={styles.quest3of10}>Question 3 of 10
+                        <Text style={styles.quest3of10}>Question {numberOfQuestion(questionNmbr)} of {nmbrOfQuestions}
                     </Text>
-                        <Text style={styles.timeRightTop}>Time: 28 sec
+                        <Text style={styles.timeRightTop}>Time: {showQuestionDuration()} sec
                     </Text>
                     </View>
                     <View style={styles.time}>
-                        <Text style={styles.centreText}>
-                            .................................. Time ..................................
+                        <Text style={styles.timeText}>
+                            {showQuestionDuration()}
                         </Text>
                     </View>
                     <View style={styles.question}>
-                        <Text style={styles.centreText}>
-                            Here will be the question
-                        </Text>
-                        <Text style={styles.underTheQuestion}>
-                            Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                            Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s,
-                            when an unknown printer took a galley of type and scrambled it to make
-                            a type specimen book.
+                        <Text style={styles.theQuestion}>
+                            {question}
                         </Text>
                     </View>
                 </View>
                 <View style={styles.container}>
-                    <ListOfAnswers></ListOfAnswers>
+                    <ListOfAnswers allAnswers={everyAnswer}/>
                 </View>
             </View>
         </View >
@@ -91,18 +223,23 @@ const styles = StyleSheet.create({
         padding: 10,
         fontSize: 15,
     },
+    timeText: {
+        flex: 1,
+        padding: 10,
+        fontSize: 30,
+    },
     question: {
         flex: 3,
         alignItems: 'center',
         justifyContent: 'center',
         flexDirection: 'column',
     },
-    underTheQuestion: {
-        flex: 2,
+    theQuestion: {
+        flex: 1,
         paddingLeft: 16,
         paddingRight: 16,
         paddingBottom: 16,
-        fontSize: 12
+        fontSize: 20
     },
     nmbrOfQuestion: {
         flex: 1,
