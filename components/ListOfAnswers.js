@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Alert, FlatList, SafeAreaView, StatusBar, StyleSheet, Text, TouchableOpacity } from "react-native";
+import { useNavigation } from '@react-navigation/native';
 
 
 const DATA = [
@@ -20,27 +21,78 @@ const DATA = [
         title: "Answer D",
     },
 ];
+//
+//
+//
+// const tasks = [{
+//     "question": "Nie ma skrzydeł, a trzepocze, nie ma ust, a mamrocze," +
+//         "nie ma nóg, a pląsa, nie ma zębów, a kąsa.",
+//     "answers": [{
+//         "content": "Wiatr",
+//         "isCorrect": true
+//     },
+//     {
+//         "content": "Woda",
+//         "isCorrect": false
+//     },
+//     {
+//         "content": "Ogień",
+//         "isCorrect": false
+//     },
+//     {
+//         "content": "Mucha",
+//         "isCorrect": false
+//     },
+//     ],
+//     "duration": 30
+// },
+// ];
+//
+// const test = [{
+//     "id": 1,
+//     "name": "Zagadki",
+//     "description": "Sprawdź swoją wiedzę w najciekawszych zagadkach.",
+//     tasks,
+// },
+// ];
 
-function pickedAnswer() {
-    Alert.alert("You choose answer");
+
+const checkAnswer = (givenAnswer) => {
+
+    console.log(givenAnswer);
+    if (givenAnswer.isCorrect) {
+        Alert.alert("That's correct answer!");
+        // answerHasBeenGiven(true)
+    } else {
+        Alert.alert("That's WRONG answer!");
+        // answerHasBeenGiven(false)
+    }
+    // return Alert.alert("Alert!!!");
 }
 
-const Item = ({ item, onPress, style }) => (
-    <TouchableOpacity onPress={onPress} style={[styles.item, style]}>
-        <Text style={styles.title}>{item.title}</Text>
+// const answerHasBeenGiven = (isTrue)  => {
+//     let navigation = useNavigation();
+//     console.log(isTrue);
+//     navigation.navigate('Test', {correctAnswer: isTrue});
+// };
+
+const Answer = ({ answer, style }) => (
+    <TouchableOpacity onPress={() => checkAnswer(answer)} style={[styles.answer, style]}>
+        <Text style={styles.title}>{answer.content}</Text>
     </TouchableOpacity>
 );
 
-export default function ListOfAnswers({ navigation }) {
+export default function ListOfAnswers({ navigation, allAnswers }) {
     const [selectedId, setSelectedId] = useState(null);
 
-    const renderItem = ({ item }) => {
-        const backgroundColor = item.id === selectedId ? "grey" : "orange";
+    const renderAnswer = ({ item }) => {
+        const backgroundColor = item.isCorrect === selectedId ? "black" : "orange";
+
 
         return (
-            <Item
-                item={item}
-                onPress={() => pickedAnswer()}
+            <Answer
+                answer={item}
+                // onPress={() => checkAnswer()}
                 style={{ backgroundColor }}
             />
         );
@@ -49,9 +101,9 @@ export default function ListOfAnswers({ navigation }) {
     return (
         <SafeAreaView style={styles.container}>
             <FlatList
-                data={DATA}
-                renderItem={renderItem}
-                keyExtractor={(item) => item.id}
+                data={allAnswers}
+                renderItem={renderAnswer}
+                // keyExtractor={(item,index) => {answerr=item, indexOfAnswer=index}}
                 extraData={selectedId}
             />
         </SafeAreaView>
@@ -63,7 +115,7 @@ const styles = StyleSheet.create({
         flex: 1,
         marginTop: StatusBar.currentHeight || 0,
     },
-    item: {
+    answer: {
         padding: 15,
         marginVertical: 4,
         marginHorizontal: 16,

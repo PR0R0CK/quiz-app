@@ -115,13 +115,114 @@ const DATA = [
 ];
 
 
+const tasks = [{
+    "question": "Nie ma skrzydeł, a trzepocze, nie ma ust, a mamrocze," +
+        "nie ma nóg, a pląsa, nie ma zębów, a kąsa.",
+    "answers": [{
+        "content": "Wiatr",
+        "isCorrect": true
+    },
+    {
+        "content": "Woda",
+        "isCorrect": false
+    },
+    {
+        "content": "Ogień",
+        "isCorrect": false
+    },
+    {
+        "content": "Mucha",
+        "isCorrect": false
+    },
+    ],
+    "duration": 30
+},
+{
+    "question": "Nie oddycha, a żyje, nie pragnie, a wciąż pije.",
+    "answers": [{
+        "content": "Ryba",
+        "isCorrect": true
+    },
+    {
+        "content": "Obelix",
+        "isCorrect": false
+    },
+    {
+        "content": "Trup",
+        "isCorrect": false
+    },
+    {
+        "content": "Mucha",
+        "isCorrect": false
+    },
+    ],
+    "duration": 30
+},
+];
+
+const test = [{
+    "id": 0,
+    "name": "Zagadki",
+    "description": "Sprawdź swoją wiedzę w najciekawszych zagadkach.",
+    tasks,
+},
+{
+    "id": 1,
+    "name": "Powiedzenia",
+    "description": "Sprawdź swoją wiedzę w powiedzeniach.",
+    tasks: [{
+        "question": "Siała baba mak...",
+        "answers": [{
+            "content": "...dziadek wiedział",
+            "isCorrect": false
+        },
+        {
+            "content": "...i zasiała koguta",
+            "isCorrect": false
+        },
+        {
+            "content": "...nie wiedziała jak",
+            "isCorrect": true
+        },
+        {
+            "content": "...a mucha lata koło brzucha",
+            "isCorrect": false
+        },
+        ],
+        "duration": 30
+    },
+    {
+        "question": "Nie oddycha, a żyje, nie pragnie, a wciąż pije.",
+        "answers": [{
+            "content": "Ryba",
+            "isCorrect": true
+        },
+        {
+            "content": "Obelix",
+            "isCorrect": false
+        },
+        {
+            "content": "Trup",
+            "isCorrect": false
+        },
+        {
+            "content": "Mucha",
+            "isCorrect": false
+        },
+        ],
+        "duration": 30
+    },
+    ],
+},
+];
+
 function showAlert() {
     Alert.alert("Alert!!!");
 }
 
 const Item = ({ item, onPress, style }) => (
     <TouchableOpacity onPress={onPress} style={[styles.item, style]}>
-        <Text style={styles.title}>{item.title}</Text>
+        <Text style={styles.title}>{item.name}</Text>
         <Text>{item.description}</Text>
     </TouchableOpacity>
 );
@@ -139,7 +240,11 @@ export default function SelectableFlatList({ }) {
                 item={item}
                 // onPress={() => setSelectedId(item.id)}
                 // onPress={() => showAlert()}
-                onPress={() => navigation.navigate('Test')}
+                onPress={() => navigation.navigate('Test', {testId: item.id})}
+                // onPress={() => console.log({ item } + "#####" + item.id)}
+                // onPress={() => navigation.navigate('Test', {
+                //     testId: test[0].id,
+                // })}
                 style={{ backgroundColor }}
             />
         );
@@ -148,7 +253,7 @@ export default function SelectableFlatList({ }) {
     return (
         <SafeAreaView style={styles.container}>
             <FlatList
-                data={DATA}
+                data={test}
                 renderItem={renderItem}
                 keyExtractor={(item) => item.id}
                 extraData={selectedId}
