@@ -4,6 +4,8 @@ import ListOfAnswers from '../components/ListOfAnswers';
 
 
 export default function TestScreen({ navigation }) {
+    // const { item } = route.params;
+    // console.log('##' + tmp);
     return (
         <View style={styles.container}>
             <View style={styles.header}>

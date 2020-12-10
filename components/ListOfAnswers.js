@@ -21,13 +21,45 @@ const DATA = [
     },
 ];
 
-function pickedAnswer() {
-    Alert.alert("You choose answer");
-}
+
+
+const tasks = [{
+    "question": "Nie ma skrzydeł, a trzepocze, nie ma ust, a mamrocze," +
+        "nie ma nóg, a pląsa, nie ma zębów, a kąsa.",
+    "answers": [{
+        "content": "Wiatr",
+        "isCorrect": true
+    },
+    {
+        "content": "Woda",
+        "isCorrect": false
+    },
+    {
+        "content": "Ogień",
+        "isCorrect": false
+    },
+    {
+        "content": "Mucha",
+        "isCorrect": false
+    },
+    ],
+    "duration": 30
+},
+];
+
+const test = [{
+    "id": 1,
+    "name": "Zagadki",
+    "description": "Sprawdź swoją wiedzę w najciekawszych zagadkach.",
+    tasks,
+},
+];
+
+
 
 const Item = ({ item, onPress, style }) => (
     <TouchableOpacity onPress={onPress} style={[styles.item, style]}>
-        <Text style={styles.title}>{item.title}</Text>
+        <Text style={styles.title}>{item.content}</Text>
     </TouchableOpacity>
 );
 
@@ -35,7 +67,17 @@ export default function ListOfAnswers({ navigation }) {
     const [selectedId, setSelectedId] = useState(null);
 
     const renderItem = ({ item }) => {
-        const backgroundColor = item.id === selectedId ? "grey" : "orange";
+        const backgroundColor = item.isCorrect === selectedId ? "black" : "orange";
+        // const { testId } = route.params.testId;
+
+
+
+        function pickedAnswer() {
+            // const [selectedAnswer, setSelectedAnswer] = useState(null);
+            // console.log("You choose answer");
+            // console.log(route.params.testId)
+            Alert.alert("You choose answer");
+        }
 
         return (
             <Item
@@ -49,7 +91,7 @@ export default function ListOfAnswers({ navigation }) {
     return (
         <SafeAreaView style={styles.container}>
             <FlatList
-                data={DATA}
+                data={test[0].tasks[0].answers}
                 renderItem={renderItem}
                 keyExtractor={(item) => item.id}
                 extraData={selectedId}
