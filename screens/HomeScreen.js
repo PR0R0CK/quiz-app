@@ -13,7 +13,7 @@ export default function HomeScreen({ navigation }) {
             /> */}
             </View>
             <View style={styles.listContainer}>
-                <SelectableFlatList></SelectableFlatList>
+                <SelectableFlatList/>
             </View>
         </View>
     );
@@ -40,4 +40,4 @@ const styles = StyleSheet.create({
         flex: 14,
         justifyContent: 'center'
     }
-})
+});

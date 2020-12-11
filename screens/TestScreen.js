@@ -79,21 +79,21 @@ const test = [{
             "duration": 30
         },
             {
-                "question": "Nie oddycha, a żyje, nie pragnie, a wciąż pije.",
+                "question": "Gdzie kucharek 6 tam ...",
                 "answers": [{
-                    "content": "Ryba",
-                    "isCorrect": true
+                    "content": "..ryba",
+                    "isCorrect": false
                 },
                     {
-                        "content": "Obelix",
+                        "content": "..nie ma co jeść",
                         "isCorrect": false
                     },
                     {
-                        "content": "Trup",
-                        "isCorrect": false
+                        "content": "..cycków dwanaście",
+                        "isCorrect": true
                     },
                     {
-                        "content": "Mucha",
+                        "content": "..pleśń na ścianie",
                         "isCorrect": false
                     },
                 ],
@@ -103,47 +103,87 @@ const test = [{
     },
 ];
 
+// let timeout;
+// let tmp;
 const wait = (timeout) => {
     return new Promise(resolve => {
+        // clearTimeout(tmp);
         setTimeout(resolve, timeout);
     });
 };
 
 export default function TestScreen({ navigation, route }) {
 
-    const testId = route.params.testId;
+    // React.useEffect( () => {
+    //
+    //     // window.addEventListener("load",  pageLoad);
+    //
+    //     //component will unmount
+    //     return () => {
+    //         console.log("Returning to screen");
+    //         // window.removeEventListener("load", pageLoad);
+    //     }
+    //
+    // });
 
-    let questionNmbr = 0;
+    let isEnded = false;
+
+    const testId = route.params.testId;
+    const givenAnss = route.params;
+    // console.log('##');
+    // console.log(givenAnss);
+
+    let questionnNmbr = 0;
     // let questionDuration = test[testId].tasks[questionNmbr].duration;
-    let questionDuration = 5;
+    let questionDuration = 3;
+
+    const [questionDurationHook, setQuestionDurationHook] = useState(questionDuration);
+    const [questionNmbr, setQuestionNmbr] = useState(questionnNmbr);
+    console.log(questionNmbr);
+
     const nmbrOfQuestions = test[testId].tasks.length;
     const question = test[testId].tasks[questionNmbr].question;
     const everyAnswer = test[testId].tasks[questionNmbr].answers;
 
-    // console.log(testId);
-    // console.log(test[testId].tasks[0].question);
+
+    const [givenAnswerHook,setGivenAnswerHook] = useState(null);
 
 
-    const [questionDurationHook, setQuestionDurationHook] = useState(questionDuration);
+    function setHooks() {
+        setQuestionDurationHook(questionDuration);
+        setQuestionNmbr(questionNmbr+1);
+    }
+
+    // function setHooksAsDefault() {
+    //     if (isEnded) {
+    //         setQuestionDurationHook(questionDuration);
+    //         setQuestionNmbr(questionnNmbr);
+    //     }
+    // }
+
     function showQuestionDuration() {
-        while (questionDurationHook > -1) {
+        while (questionDurationHook > -1 && !isEnded) {
+
             wait(1000).then(() => setQuestionDurationHook(questionDurationHook - 1));
             return questionDurationHook;
         }
-        wait(1000).then(() => setQuestionDurationHook(questionDuration));
-        return "End of time!";
+        if (questionNmbr < nmbrOfQuestions-1 && !isEnded) {
+            // clearTimeout(timeout);
+            wait(1000).then(() => setHooks());
+            // clearTimeout(timeout);
+            return "End of time!";
+        } else {
+            isEnded = true;
+            // clearTimeout(timeout);
+            // setHooksAsDefault();
+            return "You have finished the test!";
+        }
     }
-
-  const checkAnswer = () => {
-
-  }
-
 
     function numberOfQuestion(nmbr: questionNmbr) {
         return  questionNmbr < nmbrOfQuestions ? questionNmbr+1 : "Nan";
     }
 
-    // const [modalVisible, setModalVisible] = useState(false);
     return (
         <View style={styles.container}>
             <View style={styles.header}>
@@ -154,7 +194,7 @@ export default function TestScreen({ navigation, route }) {
                     <View style={styles.nmbrOfQuestion}>
                         <Text style={styles.quest3of10}>Question {numberOfQuestion(questionNmbr)} of {nmbrOfQuestions}
                     </Text>
-                        <Text style={styles.timeRightTop}>Time: {showQuestionDuration()} sec
+                        <Text style={styles.timeRightTop}>Time to the next question: {showQuestionDuration()} sec
                     </Text>
                     </View>
                     <View style={styles.time}>

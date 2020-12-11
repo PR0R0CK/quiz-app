@@ -56,43 +56,55 @@ const DATA = [
 // },
 // ];
 
+let givenAns = {isGivenAns: false, isCorrectAns: false};
 
-const checkAnswer = (givenAnswer) => {
-
-    console.log(givenAnswer);
-    if (givenAnswer.isCorrect) {
-        Alert.alert("That's correct answer!");
-        // answerHasBeenGiven(true)
-    } else {
-        Alert.alert("That's WRONG answer!");
-        // answerHasBeenGiven(false)
-    }
-    // return Alert.alert("Alert!!!");
-}
-
-// const answerHasBeenGiven = (isTrue)  => {
-//     let navigation = useNavigation();
-//     console.log(isTrue);
-//     navigation.navigate('Test', {correctAnswer: isTrue});
+// const checkAnswer = (givenAnswer) => {
+//     console.log(givenAnswer);
+//     if (givenAnswer.isCorrect) {
+//         Alert.alert("That's correct answer!");
+//         givenAns.isGivenAns = true;
+//         givenAns.isCorrectAns = true;
+//     } else {
+//         Alert.alert("That's WRONG answer!");
+//         givenAns.isGivenAns = true;
+//     }
 // };
 
-const Answer = ({ answer, style }) => (
-    <TouchableOpacity onPress={() => checkAnswer(answer)} style={[styles.answer, style]}>
+
+const Answer = ({ answer, onPress, style }) => (
+    <TouchableOpacity onPress={onPress} style={[styles.answer, style]}>
         <Text style={styles.title}>{answer.content}</Text>
     </TouchableOpacity>
 );
 
-export default function ListOfAnswers({ navigation, allAnswers }) {
-    const [selectedId, setSelectedId] = useState(null);
+export default function ListOfAnswers({ navigation, allAnswers, route }) {
 
+    const checkAnswer = (givenAnswer) => {
+        console.log(givenAnswer);
+        if (givenAnswer.isCorrect) {
+            Alert.alert("That's correct answer!");
+            givenAns.isGivenAns = true;
+            givenAns.isCorrectAns = true;
+            console.log({givenAns});
+            // navigation.navigate('Test', {givenAns: givenAns});
+            givenAns.isGivenAns = false;
+            givenAns.isCorrectAns = false;
+        } else {
+            Alert.alert("That's WRONG answer!");
+            givenAns.isGivenAns = true;
+            // navigation.navigate('Test', {givenAns: givenAns});
+            console.log({givenAns});
+            givenAns.isGivenAns = false;
+        }
+    };
+
+    const [selectedId, setSelectedId] = useState(null);
     const renderAnswer = ({ item }) => {
         const backgroundColor = item.isCorrect === selectedId ? "black" : "orange";
-
-
         return (
             <Answer
                 answer={item}
-                // onPress={() => checkAnswer()}
+                onPress={() => checkAnswer(item)}
                 style={{ backgroundColor }}
             />
         );
