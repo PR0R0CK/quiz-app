@@ -1,138 +1,105 @@
-import React, { useState } from "react";
-import { Alert, FlatList, SafeAreaView, StatusBar, StyleSheet, Text, TouchableOpacity } from "react-native";
-import { useNavigation } from '@react-navigation/native';
+// import React, { useState } from "react";
+// import { Alert, FlatList, SafeAreaView, StatusBar, StyleSheet, Text, TouchableOpacity } from "react-native";
+// import { useNavigation } from '@react-navigation/native';
 
 
-const DATA = [
-    {
-        id: "1",
-        title: "Answer A",
-    },
-    {
-        id: "2",
-        title: "Answer B",
-    },
-    {
-        id: "3",
-        title: "Answer C",
-    },
-    {
-        id: "4",
-        title: "Answer D",
-    },
-];
-//
-//
-//
-// const tasks = [{
-//     "question": "Nie ma skrzydeł, a trzepocze, nie ma ust, a mamrocze," +
-//         "nie ma nóg, a pląsa, nie ma zębów, a kąsa.",
-//     "answers": [{
-//         "content": "Wiatr",
-//         "isCorrect": true
+// const DATA = [
+//     {
+//         id: "1",
+//         title: "Answer A",
 //     },
 //     {
-//         "content": "Woda",
-//         "isCorrect": false
+//         id: "2",
+//         title: "Answer B",
 //     },
 //     {
-//         "content": "Ogień",
-//         "isCorrect": false
+//         id: "3",
+//         title: "Answer C",
 //     },
 //     {
-//         "content": "Mucha",
-//         "isCorrect": false
+//         id: "4",
+//         title: "Answer D",
 //     },
-//     ],
-//     "duration": 30
-// },
-// ];
-//
-// const test = [{
-//     "id": 1,
-//     "name": "Zagadki",
-//     "description": "Sprawdź swoją wiedzę w najciekawszych zagadkach.",
-//     tasks,
-// },
 // ];
 
-let givenAns = {isGivenAns: false, isCorrectAns: false};
 
-// const checkAnswer = (givenAnswer) => {
-//     console.log(givenAnswer);
-//     if (givenAnswer.isCorrect) {
-//         Alert.alert("That's correct answer!");
-//         givenAns.isGivenAns = true;
-//         givenAns.isCorrectAns = true;
-//     } else {
-//         Alert.alert("That's WRONG answer!");
-//         givenAns.isGivenAns = true;
-//     }
+// let givenAns = { isGivenAns: false, isCorrectAns: false };
+
+// // const checkAnswer = (givenAnswer) => {
+// //     console.log(givenAnswer);
+// //     if (givenAnswer.isCorrect) {
+// //         Alert.alert("That's correct answer!");
+// //         givenAns.isGivenAns = true;
+// //         givenAns.isCorrectAns = true;
+// //     } else {
+// //         Alert.alert("That's WRONG answer!");
+// //         givenAns.isGivenAns = true;
+// //     }
+// // };
+
+
+// const Answer = ({ answer, onPress, style }) => (
+//     <TouchableOpacity onPress={onPress} style={[styles.answerr, style]}>
+//         <Text style={styles.titlee}>{answer.content}</Text>
+//     </TouchableOpacity>
+// );
+
+// export default function ListOfAnswers({ navigation, allAnswers, route }) {
+
+//     const checkAnswer = (givenAnswer) => {
+//         console.log(givenAnswer);
+//         if (givenAnswer.isCorrect) {
+//             Alert.alert("That's correct answer!");
+//             givenAns.isGivenAns = true;
+//             givenAns.isCorrectAns = true;
+//             console.log({ givenAns });
+//             // navigation.navigate('Test', {givenAns: givenAns});
+//             givenAns.isGivenAns = false;
+//             givenAns.isCorrectAns = false;
+//         } else {
+//             Alert.alert("That's WRONG answer!");
+//             givenAns.isGivenAns = true;
+//             // navigation.navigate('Test', {givenAns: givenAns});
+//             console.log({ givenAns });
+//             givenAns.isGivenAns = false;
+//         }
+//     };
+
+//     const [selectedId, setSelectedId] = useState(null);
+//     const renderAnswer = ({ item }) => {
+//         const backgroundColor = item.isCorrect === selectedId ? "black" : "orange";
+//         return (
+//             <Answer
+//                 answer={item}
+//                 onPress={() => checkAnswer(item)}
+//                 style={{ backgroundColor }}
+//             />
+//         );
+//     };
+
+//     return (
+//         <SafeAreaView style={styles.containerr}>
+//             <FlatList
+//                 data={allAnswers}
+//                 renderItem={renderAnswer}
+//                 // keyExtractor={(item,index) => {answerr=item, indexOfAnswer=index}}
+//                 extraData={selectedId}
+//             />
+//         </SafeAreaView>
+//     );
 // };
 
-
-const Answer = ({ answer, onPress, style }) => (
-    <TouchableOpacity onPress={onPress} style={[styles.answer, style]}>
-        <Text style={styles.title}>{answer.content}</Text>
-    </TouchableOpacity>
-);
-
-export default function ListOfAnswers({ navigation, allAnswers, route }) {
-
-    const checkAnswer = (givenAnswer) => {
-        console.log(givenAnswer);
-        if (givenAnswer.isCorrect) {
-            Alert.alert("That's correct answer!");
-            givenAns.isGivenAns = true;
-            givenAns.isCorrectAns = true;
-            console.log({givenAns});
-            // navigation.navigate('Test', {givenAns: givenAns});
-            givenAns.isGivenAns = false;
-            givenAns.isCorrectAns = false;
-        } else {
-            Alert.alert("That's WRONG answer!");
-            givenAns.isGivenAns = true;
-            // navigation.navigate('Test', {givenAns: givenAns});
-            console.log({givenAns});
-            givenAns.isGivenAns = false;
-        }
-    };
-
-    const [selectedId, setSelectedId] = useState(null);
-    const renderAnswer = ({ item }) => {
-        const backgroundColor = item.isCorrect === selectedId ? "black" : "orange";
-        return (
-            <Answer
-                answer={item}
-                onPress={() => checkAnswer(item)}
-                style={{ backgroundColor }}
-            />
-        );
-    };
-
-    return (
-        <SafeAreaView style={styles.container}>
-            <FlatList
-                data={allAnswers}
-                renderItem={renderAnswer}
-                // keyExtractor={(item,index) => {answerr=item, indexOfAnswer=index}}
-                extraData={selectedId}
-            />
-        </SafeAreaView>
-    );
-};
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        marginTop: StatusBar.currentHeight || 0,
-    },
-    answer: {
-        padding: 15,
-        marginVertical: 4,
-        marginHorizontal: 16,
-    },
-    title: {
-        fontSize: 20,
-    },
-});
+// const styles = StyleSheet.create({
+//     containerr: {
+//         flex: 1,
+//         marginTop: StatusBar.currentHeight || 0,
+//     },
+//     answerr: {
+//         padding: 15,
+//         marginVertical: 4,
+//         marginHorizontal: 16,
+//     },
+//     titlee: {
+//         fontSize: 20,
+//     },
+// });
