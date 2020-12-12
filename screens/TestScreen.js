@@ -223,7 +223,7 @@ export default function TestScreen({ navigation, route }) {
             </View>
         </View >
     );
-}
+};
 
 
 
