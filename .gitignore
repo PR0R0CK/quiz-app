@@ -11,5 +11,7 @@ web-build/
 
 .idea
 
+debug.log
+
 # macOS
 .DS_Store
