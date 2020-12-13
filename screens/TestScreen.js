@@ -117,19 +117,6 @@ let questionnNmbr = 0;
 
 export default function TestScreen({ navigation, route }) {
 
-    // React.useEffect( () => {
-    //
-    //     // window.addEventListener("load",  pageLoad);
-    //
-    //     //component will unmount
-    //     return () => {
-    //         console.log("Returning to screen");
-    //         // window.removeEventListener("load", pageLoad);
-    //     }
-    //
-    // });
-
-
     let isEnded = false;
 
 
