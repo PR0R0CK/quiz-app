@@ -1,7 +1,5 @@
-// import * as React from 'react';
 import React, { useState } from 'react';
 import { Alert, StyleSheet, View, Text, StatusBar, SafeAreaView, FlatList, TouchableOpacity } from 'react-native';
-// import ListOfAnswers from '../components/ListOfAnswers';
 import { useNavigation } from '@react-navigation/native';
 
 
@@ -113,8 +111,8 @@ const wait = (timeout) => {
     });
 };
 
-let isAnswerGiven = false;
-
+// let isAnswerGiven = false;
+let questionnNmbr = 0;
 
 
 export default function TestScreen({ navigation, route }) {
@@ -131,44 +129,64 @@ export default function TestScreen({ navigation, route }) {
     //
     // });
 
+
     let isEnded = false;
 
 
-
     const testId = route.params.testId;
-    const givenAnss = route.params;
     // console.log('##');
-    // console.log(givenAnss);
 
-    let questionnNmbr = 0;
+    // let questionNmbr = 0;
     // let questionDuration = test[testId].tasks[questionNmbr].duration;
     let questionDuration = 5;
 
     const [questionDurationHook, setQuestionDurationHook] = useState(questionDuration);
     const [questionNmbr, setQuestionNmbr] = useState(questionnNmbr);
-    console.log(questionNmbr);
+
+    // console.log(questionNmbr);
 
     const nmbrOfQuestions = test[testId].tasks.length;
-    const question = test[testId].tasks[questionNmbr].question;
-    const everyAnswer = test[testId].tasks[questionNmbr].answers;
+    let question = test[testId].tasks[questionNmbr].question;
+    let everyAnswer = test[testId].tasks[questionNmbr].answers;
 
+    let givenAns = { isGivenAns: false, isCorrectAns: false };
+    function changeQuestion() {
+        if (givenAns.isGivenAns) {
+            if (questionNmbr < nmbrOfQuestions - 1) {
 
-    const [givenAnswerHook, setGivenAnswerHook] = useState(null);
-
-
-    function setHooks() {
-        if (isAnswerGiven) {
-            setQuestionDurationHook(questionDuration);
-            setQuestionNmbr(questionNmbr + 1);
+                questionnNmbr++;
+                setQuestionNmbr(questionnNmbr);
+                // clearTimeout(wait);
+                setQuestionDurationHook(questionDuration);
+            } else {
+                navigation.navigate('Result');
+                questionnNmbr = 0;
+                setQuestionNmbr(questionnNmbr);
+            }
         }
-    }
+    };
 
-    // function setHooksAsDefault() {
-    //     if (isEnded) {
-    //         setQuestionDurationHook(questionDuration);
-    //         setQuestionNmbr(questionnNmbr);
-    //     }
-    // }
+    function logEvth() {
+        console.log("Nmbr of questions: " + nmbrOfQuestions);
+        console.log("question: " + question);
+        console.log("everyAnswer: " + everyAnswer);
+    };
+
+
+
+    // function setHooks() {
+    //     setQuestionDurationHook(questionDuration);
+    //     // setQuestionNmbr(questionNmbr + 1);
+    // };
+
+    const clearState = () => {
+        setQuestionDurationHook(questionDuration);
+    };
+
+    // const handleSubmit = e => {
+    //     e.preventDefault();
+    //     clearState;
+    // };
 
     function showQuestionDuration() {
         while (questionDurationHook > -1 && !isEnded) {
@@ -178,20 +196,22 @@ export default function TestScreen({ navigation, route }) {
         }
         if (questionNmbr < nmbrOfQuestions - 1 && !isEnded) {
             // clearTimeout(timeout);
-            wait(1000).then(() => setHooks());
+            wait(1000).then(() => clearState());
             // clearTimeout(timeout);
             return "End of time!";
         } else {
             isEnded = true;
             // clearTimeout(timeout);
-            // setHooksAsDefault();
             return "You have finished the test!";
         }
-    }
+    };
 
     function numberOfQuestion(questionNmbr) {
-        return questionNmbr < nmbrOfQuestions ? questionNmbr + 1 : "Nan";
-    }
+        let qNmbr = questionNmbr < nmbrOfQuestions ? questionNmbr + 1 : "Nan";
+        return qNmbr;
+    };
+
+    // logEvth();
 
     return (
         <View style={styles.container}>
@@ -218,7 +238,7 @@ export default function TestScreen({ navigation, route }) {
                     </View>
                 </View>
                 <View style={styles.container}>
-                    <ListOfAnswers allAnswers={everyAnswer} />
+                    <ListOfAnswers allAnswers={everyAnswer} givenAns={givenAns} changeQuestion={changeQuestion} />
                 </View>
             </View>
         </View >
@@ -226,21 +246,9 @@ export default function TestScreen({ navigation, route }) {
 };
 
 
-
-// LIST OF ANSWERS COMPONENT
-let givenAns = { isGivenAns: false, isCorrectAns: false };
-
-// const checkAnswer = (givenAnswer) => {
-//     console.log(givenAnswer);
-//     if (givenAnswer.isCorrect) {
-//         Alert.alert("That's correct answer!");
-//         givenAns.isGivenAns = true;
-//         givenAns.isCorrectAns = true;
-//     } else {
-//         Alert.alert("That's WRONG answer!");
-//         givenAns.isGivenAns = true;
-//     }
-// };
+///////////////////////////////////////////////////////////////////////////
+//////////////////////// LIST OF ANSWERS COMPONENT ////////////////////////
+///////////////////////////////////////////////////////////////////////////
 
 
 const Answer = ({ answer, onPress, style }) => (
@@ -250,27 +258,28 @@ const Answer = ({ answer, onPress, style }) => (
 );
 
 
-function ListOfAnswers({ navigation, allAnswers, route }) {
+function ListOfAnswers({ navigation, allAnswers, givenAns, changeQuestion }) {
 
     const checkAnswer = (givenAnswer) => {
-        isAnswerGiven = true
+
         console.log(givenAnswer);
         if (givenAnswer.isCorrect) {
-            Alert.alert("That's correct answer!");
             givenAns.isGivenAns = true;
             givenAns.isCorrectAns = true;
             console.log({ givenAns });
-            // navigation.navigate('Test', {givenAns: givenAns});
+            changeQuestion();
+            Alert.alert("That's correct answer! Next: " + questionnNmbr);
             givenAns.isGivenAns = false;
             givenAns.isCorrectAns = false;
         } else {
             Alert.alert("That's WRONG answer!");
             givenAns.isGivenAns = true;
-            // navigation.navigate('Test', {givenAns: givenAns});
             console.log({ givenAns });
+            changeQuestion();
             givenAns.isGivenAns = false;
         }
     };
+
 
     const [selectedId, setSelectedId] = useState(null);
     const renderAnswer = ({ item }) => {
@@ -278,7 +287,7 @@ function ListOfAnswers({ navigation, allAnswers, route }) {
         return (
             <Answer
                 answer={item}
-                onPress={() => checkAnswer(item)}
+                onPress={() => checkAnswer(item)}//checkAnswer(item)}
                 style={{ backgroundColor }}
             />
         );
