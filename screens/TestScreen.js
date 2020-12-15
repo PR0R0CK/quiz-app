@@ -130,8 +130,6 @@ export default function TestScreen({ navigation, route }) {
     const [questionDurationHook, setQuestionDurationHook] = useState(questionDuration);
     const [questionNmbr, setQuestionNmbr] = useState(questionnNmbr);
 
-    // console.log(questionNmbr);
-
     const nmbrOfQuestions = test[testId].tasks.length;
     let question = test[testId].tasks[questionNmbr].question;
     let everyAnswer = test[testId].tasks[questionNmbr].answers;
