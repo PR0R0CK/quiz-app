@@ -28,16 +28,16 @@ export default function ResultScreen({ navigation }) {
             </View>
             <View style={styles.headerNickPointTypeData}>
                 <View style={styles.elementInRow}>
-                    <Text style={{ color: 'white' }}>nick</Text>
+                    <Text style={{ fontFamily: "Inter_500Medium", color: 'white' }}>nick</Text>
                 </View>
                 <View style={styles.elementInRow}>
-                    <Text style={{ color: 'white' }}>point</Text>
+                    <Text style={{ fontFamily: "Inter_500Medium", color: 'white' }}>point</Text>
                 </View>
                 <View style={styles.elementInRow}>
-                    <Text style={{ color: 'white' }}>type</Text>
+                    <Text style={{ fontFamily: "Inter_500Medium", color: 'white' }}>type</Text>
                 </View>
                 <View style={styles.elementInRow}>
-                    <Text style={{ color: 'white' }}>date</Text>
+                    <Text style={{ fontFamily: "Inter_500Medium", color: 'white' }}>date</Text>
                 </View>
             </View>
             <View style={styles.resultFlatList}>
@@ -60,9 +60,9 @@ const styles = StyleSheet.create({
     },
     title: {
         textAlign: 'center',
+        fontSize: 25,
         color: 'white',
-        fontSize: 20,
-        fontWeight: 'bold',
+        fontFamily: "Inter_900Black"
     },
     nickPointTypeDate: {
         marginHorizontal: 2,

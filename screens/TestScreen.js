@@ -1,107 +1,108 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Alert, StyleSheet, View, Text, StatusBar, SafeAreaView, FlatList, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 
-const test = [{
-    "id": 0,
-    "name": "Zagadki",
-    "description": "Sprawdź swoją wiedzę w najciekawszych zagadkach.",
-    tasks: [{
-        "question": "Nie ma skrzydeł, a trzepocze, nie ma ust, a mamrocze," +
-            "nie ma nóg, a pląsa, nie ma zębów, a kąsa.",
-        "answers": [{
-            "content": "Wiatr",
-            "isCorrect": true
-        },
-        {
-            "content": "Woda",
-            "isCorrect": false
-        },
-        {
-            "content": "Ogień",
-            "isCorrect": false
-        },
-        {
-            "content": "Mucha",
-            "isCorrect": false
-        },
-        ],
-        "duration": 30
-    },
-    {
-        "question": "Nie oddycha, a żyje, nie pragnie, a wciąż pije.",
-        "answers": [{
-            "content": "Ryba",
-            "isCorrect": true
-        },
-        {
-            "content": "Obelix",
-            "isCorrect": false
-        },
-        {
-            "content": "Trup",
-            "isCorrect": false
-        },
-        {
-            "content": "Mucha",
-            "isCorrect": false
-        },
-        ],
-        "duration": 30
-    },
-    ],
-},
-{
-    "id": 1,
-    "name": "Powiedzenia",
-    "description": "Sprawdź swoją wiedzę w powiedzeniach.",
-    tasks: [{
-        "question": "Siała baba mak...",
-        "answers": [{
-            "content": "...dziadek wiedział",
-            "isCorrect": false
-        },
-        {
-            "content": "...i zasiała koguta",
-            "isCorrect": false
-        },
-        {
-            "content": "...nie wiedziała jak",
-            "isCorrect": true
-        },
-        {
-            "content": "...a mucha lata koło brzucha",
-            "isCorrect": false
-        },
-        ],
-        "duration": 30
-    },
-    {
-        "question": "Gdzie kucharek 6 tam ...",
-        "answers": [{
-            "content": "..ryba",
-            "isCorrect": false
-        },
-        {
-            "content": "..nie ma co jeść",
-            "isCorrect": false
-        },
-        {
-            "content": "..cycków dwanaście",
-            "isCorrect": true
-        },
-        {
-            "content": "..pleśń na ścianie",
-            "isCorrect": false
-        },
-        ],
-        "duration": 30
-    },
-    ],
-},
-];
+// const test = [{
+//     "id": "5fd7e4629cc0bd32fcc04d64",
+//     "name": "Zagadki",
+//     "description": "Sprawdź swoją wiedzę w najciekawszych zagadkach.",
+//     "tasks": [{
+//         "question": "Nie ma skrzydeł, a trzepocze, nie ma ust, a mamrocze," +
+//             "nie ma nóg, a pląsa, nie ma zębów, a kąsa.",
+//         "answers": [{
+//             "content": "Wiatr",
+//             "isCorrect": true
+//         },
+//         {
+//             "content": "Woda",
+//             "isCorrect": false
+//         },
+//         {
+//             "content": "Ogień",
+//             "isCorrect": false
+//         },
+//         {
+//             "content": "Mucha",
+//             "isCorrect": false
+//         },
+//         ],
+//         "duration": 30
+//     },
+//     {
+//         "question": "Nie oddycha, a żyje, nie pragnie, a wciąż pije.",
+//         "answers": [{
+//             "content": "Ryba",
+//             "isCorrect": true
+//         },
+//         {
+//             "content": "Obelix",
+//             "isCorrect": false
+//         },
+//         {
+//             "content": "Trup",
+//             "isCorrect": false
+//         },
+//         {
+//             "content": "Mucha",
+//             "isCorrect": false
+//         },
+//         ],
+//         "duration": 30
+//     },
+//     ],
+// },
+// {
+//     "id": 1,
+//     "name": "Powiedzenia",
+//     "description": "Sprawdź swoją wiedzę w powiedzeniach.",
+//     "tasks": [{
+//         "question": "Siała baba mak...",
+//         "answers": [{
+//             "content": "...dziadek wiedział",
+//             "isCorrect": false
+//         },
+//         {
+//             "content": "...i zasiała koguta",
+//             "isCorrect": false
+//         },
+//         {
+//             "content": "...nie wiedziała jak",
+//             "isCorrect": true
+//         },
+//         {
+//             "content": "...a mucha lata koło brzucha",
+//             "isCorrect": false
+//         },
+//         ],
+//         "duration": 30
+//     },
+//     {
+//         "question": "Gdzie kucharek 6 tam ...",
+//         "answers": [{
+//             "content": "..ryba",
+//             "isCorrect": false
+//         },
+//         {
+//             "content": "..nie ma co jeść",
+//             "isCorrect": false
+//         },
+//         {
+//             "content": "..cycków dwanaście",
+//             "isCorrect": true
+//         },
+//         {
+//             "content": "..pleśń na ścianie",
+//             "isCorrect": false
+//         },
+//         ],
+//         "duration": 30
+//     },
+//     ],
+// },
+// ];
 
+// const test = [{ "id": "5fd7e4629cc0bd32fcc04d64", "name": "Jak dobrze znasz ekipę Friza?", "description": "Test o członkach najlepszej ekipy na youtube.", "tags": ["rozrywka", "youtube", "cringe"], "level": "trudny", "numberOfTasks": 5 }]
 // let timeout;
 // let tmp;
 const wait = (timeout) => {
@@ -116,37 +117,108 @@ let questionnNmbr = 0;
 
 
 export default function TestScreen({ navigation, route }) {
+    const [loaded, setLoaded] = useState(false);
+    useEffect(() => {
+        getData();
+        setLoaded(true);
+    });
 
     let isEnded = false;
 
-
     const testId = route.params.testId;
-    // console.log('##');
-
-    // let questionNmbr = 0;
-    // let questionDuration = test[testId].tasks[questionNmbr].duration;
-    let questionDuration = 5;
+    // console.log(testId);
 
     const [questionDurationHook, setQuestionDurationHook] = useState(questionDuration);
     const [questionNmbr, setQuestionNmbr] = useState(questionnNmbr);
 
-    const nmbrOfQuestions = test[testId].tasks.length;
-    let question = test[testId].tasks[questionNmbr].question;
-    let everyAnswer = test[testId].tasks[questionNmbr].answers;
+    // let questionNmbr = 0;
+
+    const theTesttt = {
+        "id": "5fd7e4629cc0bd32fcc04d64",
+        "name": "Loading...",
+        "description": "Wait for it...",
+        "tags": ["loading", "loading", "loading"],
+        "level": "loading",
+        "numberOfTasks": 1,
+        "tasks": [{
+            "question": "How are you feel with waiting?",
+            "answers": [{
+                "content": "Angry",
+                "isCorrect": true
+            },
+            {
+                "content": "Angry",
+                "isCorrect": false
+            },
+            {
+                "content": "Angry",
+                "isCorrect": false
+            },
+            {
+                "content": "Angry",
+                "isCorrect": false
+            },
+            ],
+            "duration": 30,
+        }]
+    };
+
+    //FETCH TEST
+    const [theTest, setTheTest] = useState(theTesttt);
+    function getData() {
+        fetch(`http://tgryl.pl/quiz/test/${testId}`)
+            .then((response) => response.json())
+            .then((json) => setTheTest(json))
+            .catch((error) => console.error(error))
+            .finally(() => { });
+        // .finally(() => console.log("theTest"));
+    };
+
+    // let questionDuration = theTest.tasks[questionNmbr].duration;
+    let questionDuration = 5;
+
+    const nmbrOfQuestions = theTest.tasks.length;
+    let question = theTest.tasks[questionNmbr].question;
+    let everyAnswer = theTest.tasks[questionNmbr].answers;
+    let tags = theTest.tags.join(',');
+
+
+    const [score, setScore] = useState(0);
+    function sendResultsOfTestPOST() {
+        let resultOfTheTest = {
+            nick: "Shark From Behind",
+            score: score,
+            total: nmbrOfQuestions,
+            type: tags
+        };
+
+        fetch('http://tgryl.pl/quiz/result', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-type': 'application/json'
+            },
+            body: JSON.stringify(resultOfTheTest)
+        }).then(s => (navigation.navigate('Result')))
+    };
 
     let givenAns = { isGivenAns: false, isCorrectAns: false };
     function changeQuestion() {
         if (givenAns.isGivenAns) {
             if (questionNmbr < nmbrOfQuestions - 1) {
-
+                if (givenAns.isCorrectAns) {
+                    setScore(score + 1);
+                }
                 questionnNmbr++;
                 setQuestionNmbr(questionnNmbr);
                 // clearTimeout(wait);
                 setQuestionDurationHook(questionDuration);
             } else {
-                navigation.navigate('Result');
+                sendResultsOfTestPOST();
                 questionnNmbr = 0;
                 setQuestionNmbr(questionnNmbr);
+
+                //POST method
             }
         }
     };
@@ -173,23 +245,23 @@ export default function TestScreen({ navigation, route }) {
     //     clearState;
     // };
 
-    function showQuestionDuration() {
-        while (questionDurationHook > -1 && !isEnded) {
+    // function showQuestionDuration() {
+    //     while (questionDurationHook > -1 && !isEnded) {
 
-            wait(1000).then(() => setQuestionDurationHook(questionDurationHook - 1));
-            return questionDurationHook;
-        }
-        if (questionNmbr < nmbrOfQuestions - 1 && !isEnded) {
-            // clearTimeout(timeout);
-            wait(1000).then(() => clearState());
-            // clearTimeout(timeout);
-            return "End of time!";
-        } else {
-            isEnded = true;
-            // clearTimeout(timeout);
-            return "You have finished the test!";
-        }
-    };
+    //         wait(1000).then(() => setQuestionDurationHook(questionDurationHook - 1));
+    //         return questionDurationHook;
+    //     }
+    //     if (questionNmbr < nmbrOfQuestions - 1 && !isEnded) {
+    //         // clearTimeout(timeout);
+    //         wait(1000).then(() => clearState());
+    //         // clearTimeout(timeout);
+    //         return "End of time!";
+    //     } else {
+    //         isEnded = true;
+    //         // clearTimeout(timeout);
+    //         return "You have finished the test!";
+    //     }
+    // };
 
     function numberOfQuestion(questionNmbr) {
         let qNmbr = questionNmbr < nmbrOfQuestions ? questionNmbr + 1 : "Nan";
@@ -203,17 +275,17 @@ export default function TestScreen({ navigation, route }) {
             <View style={styles.header}>
                 <Text style={styles.title}>Test Screen</Text>
             </View>
-            <View style={styles.mainView}>
+            {!loaded ? <Text>Lading</Text> : <View style={styles.mainView}>
                 <View style={styles.container}>
                     <View style={styles.nmbrOfQuestion}>
                         <Text style={styles.quest3of10}>Question {numberOfQuestion(questionNmbr)} of {nmbrOfQuestions}
                         </Text>
-                        <Text style={styles.timeRightTop}>Time to the next question: {showQuestionDuration()} sec
+                        <Text style={styles.timeRightTop}>Time to the next question: {/*showQuestionDuration()*/} sec
                     </Text>
                     </View>
                     <View style={styles.time}>
                         <Text style={styles.timeText}>
-                            {showQuestionDuration()}
+                            {/* {showQuestionDuration()} */}
                         </Text>
                     </View>
                     <View style={styles.question}>
@@ -225,7 +297,7 @@ export default function TestScreen({ navigation, route }) {
                 <View style={styles.container}>
                     <ListOfAnswers allAnswers={everyAnswer} givenAns={givenAns} changeQuestion={changeQuestion} />
                 </View>
-            </View>
+            </View>}
         </View >
     );
 };
@@ -247,11 +319,11 @@ function ListOfAnswers({ navigation, allAnswers, givenAns, changeQuestion }) {
 
     const checkAnswer = (givenAnswer) => {
 
-        console.log(givenAnswer);
+        // console.log(givenAnswer);
         if (givenAnswer.isCorrect) {
             givenAns.isGivenAns = true;
             givenAns.isCorrectAns = true;
-            console.log({ givenAns });
+            // console.log({ givenAns });
             changeQuestion();
             Alert.alert("That's correct answer! Next: " + questionnNmbr);
             givenAns.isGivenAns = false;
@@ -259,7 +331,7 @@ function ListOfAnswers({ navigation, allAnswers, givenAns, changeQuestion }) {
         } else {
             Alert.alert("That's WRONG answer!");
             givenAns.isGivenAns = true;
-            console.log({ givenAns });
+            // console.log({ givenAns });
             changeQuestion();
             givenAns.isGivenAns = false;
         }
@@ -304,6 +376,8 @@ const styles = StyleSheet.create({
     },
     titlee: {
         fontSize: 20,
+        fontFamily: "Inter_700Bold",
+
     },
     container: {
         flex: 1,
@@ -321,21 +395,22 @@ const styles = StyleSheet.create({
     },
     title: {
         textAlign: 'center',
-        color: 'white',
-        fontSize: 20,
-        fontWeight: 'bold',
+        fontSize: 25,
+        fontFamily: "Inter_900Black"
     },
     quest3of10: {
         flex: 1,
         textAlign: 'left',
         padding: 10,
         fontSize: 15,
+        fontFamily: "Inter_500Medium"
     },
     timeRightTop: {
         flex: 1,
         textAlign: 'right',
         padding: 10,
         fontSize: 15,
+        fontFamily: "Inter_500Medium"
     },
     time: {
         flex: 1,
@@ -350,11 +425,13 @@ const styles = StyleSheet.create({
         flex: 1,
         padding: 10,
         fontSize: 15,
+        fontFamily: "Inter_500Medium"
     },
     timeText: {
         flex: 1,
         padding: 10,
         fontSize: 30,
+        fontFamily: "Inter_500Medium"
     },
     question: {
         flex: 3,
@@ -367,7 +444,8 @@ const styles = StyleSheet.create({
         paddingLeft: 16,
         paddingRight: 16,
         paddingBottom: 16,
-        fontSize: 20
+        fontSize: 20,
+        fontFamily: "Inter_500Medium"
     },
     nmbrOfQuestion: {
         flex: 1,
