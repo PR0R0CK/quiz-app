@@ -1,88 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Alert, SafeAreaView, View, FlatList, StyleSheet, Text, StatusBar, TouchableOpacity, RefreshControl } from 'react-native';
-
-const DATA = [
-    {
-        id: '1',
-        nick: 'PR0R0CK',
-        point: '20/20',
-        type: 'test1',
-        date: '01-12-2020'
-    },
-    {
-        id: '2',
-        nick: 'Geralt',
-        point: '18/20',
-        type: 'test1',
-        date: '28-11-2020'
-    },
-    {
-        id: '3',
-        nick: 'PyramidHead',
-        point: '2/20',
-        type: 'test1',
-        date: '01-10-2020'
-    },
-    {
-        id: '4',
-        nick: 'PR0R0CK',
-        point: '20/20',
-        type: 'test1',
-        date: '01-12-2020'
-    },
-    {
-        id: '5',
-        nick: 'Geralt',
-        point: '18/20',
-        type: 'test1',
-        date: '28-11-2020'
-    },
-    {
-        id: '6',
-        nick: 'PyramidHead',
-        point: '2/20',
-        type: 'test1',
-        date: '01-10-2020'
-    },
-    {
-        id: '7',
-        nick: 'PR0R0CK',
-        point: '20/20',
-        type: 'test1',
-        date: '01-12-2020'
-    },
-    {
-        id: '8',
-        nick: 'Geralt',
-        point: '18/20',
-        type: 'test1',
-        date: '28-11-2020'
-    },
-    {
-        id: '9',
-        nick: 'PyramidHead',
-        point: '2/20',
-        type: 'test1',
-        date: '01-10-2020'
-    },
-];
-
-const results = [
-    {
-        "nick": 'Marek',
-        "score": 18,
-        "total": 20,
-        "type": 'historia',
-        "date": '2018-11-22'
-    },
-    {
-        "nick": 'Darek',
-        "score": 17,
-        "total": 20,
-        "type": 'biologia',
-        "date": '2018-11-24'
-    },
-];
 
 function showAlert() {
     Alert.alert("Alert!!!");
@@ -99,23 +16,40 @@ const Item = ({ item, style }) => (
     <TouchableOpacity onPress={() => { showAlert() }} style={[styles.item, style]}>
         <View style={{ flex: 1, flexDirection: 'row' }}>
             <View style={styles.elementInRow}>
-                <Text style={{ color: 'white' }}>{item.nick}</Text>
+                <Text style={{ fontFamily: "Inter_500Medium", color: 'white' }}>{item.nick}</Text>
             </View>
             <View style={styles.elementInRow}>
-                <Text style={{ color: 'white' }}>{item.score}/{item.total}</Text>
+                <Text style={{ fontFamily: "Inter_500Medium", color: 'white' }}>{item.score}/{item.total}</Text>
             </View>
             <View style={styles.elementInRow}>
-                <Text style={{ color: 'white' }}>{item.type}</Text>
+                <Text style={{ fontFamily: "Inter_500Medium", color: 'white' }}>{item.type}</Text>
             </View>
             <View style={styles.elementInRow}>
-                <Text style={{ color: 'white' }}>{item.date}</Text>
+                <Text style={{ fontFamily: "Inter_500Medium", color: 'white' }}>{item.date}</Text>
             </View>
 
         </View>
     </TouchableOpacity>
 );
 
+
 const ResultsFlatList = () => {
+    const [results, setResults] = useState(null);
+
+    useEffect(() => {
+        getData();
+    });
+
+    function getData() {
+        fetch('http://tgryl.pl/quiz/results')
+            .then((response) => response.json())
+            .then((json) => setResults(json))
+            .catch((error) => console.error(error))
+            .finally(() => { });
+        // .finally(() => console.log(results));
+    };
+
+
     const [selectedId, setSelectedId] = useState(null);
 
     const renderItem = ({ item }) => {
