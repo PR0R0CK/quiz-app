@@ -186,7 +186,7 @@ export default function TestScreen({ navigation, route }) {
     const [score, setScore] = useState(0);
     function sendResultsOfTestPOST() {
         let resultOfTheTest = {
-            nick: "Shark From Behind",
+            nick: "Pokemon",
             score: score,
             total: nmbrOfQuestions,
             type: tags
