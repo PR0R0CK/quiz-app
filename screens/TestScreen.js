@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Alert, StyleSheet, View, Text, StatusBar, SafeAreaView, FlatList, TouchableOpacity } from 'react-native';
+import {
+    Alert, StyleSheet, View, Text, StatusBar, SafeAreaView, FlatList,
+    AsyncStorage, TouchableOpacity
+} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 
@@ -117,6 +120,28 @@ let questionnNmbr = 0;
 
 
 export default function TestScreen({ navigation, route }) {
+    // *getting name from AsyncStorage
+    const [name, setName] = useState();
+    const loadNameFromAsync = async () => {
+        try {
+            let name = await AsyncStorage.getItem("MyName");
+            if (name !== null) {
+                setName(name);
+            }
+        } catch (error) {
+            alert(error);
+        }
+    }
+
+    useEffect(() => {
+        loadNameFromAsync();
+    }, [])
+
+
+    // console.log("###" + name);
+    //
+
+
     const [loaded, setLoaded] = useState(false);
     useEffect(() => {
         getData();
@@ -174,6 +199,15 @@ export default function TestScreen({ navigation, route }) {
         // .finally(() => console.log("theTest"));
     };
 
+    const storeData = async (value) => {
+        try {
+            const jsonValue = JSON.stringify(value)
+            await AsyncStorage.setItem('@storage_Key', jsonValue)
+        } catch (e) {
+            // saving error
+        }
+    }
+
     // let questionDuration = theTest.tasks[questionNmbr].duration;
     let questionDuration = 5;
 
@@ -183,10 +217,15 @@ export default function TestScreen({ navigation, route }) {
     let tags = theTest.tags.join(',');
 
 
+
+
+
+
+
     const [score, setScore] = useState(0);
     function sendResultsOfTestPOST() {
         let resultOfTheTest = {
-            nick: "Pokemon",
+            nick: name,
             score: score,
             total: nmbrOfQuestions,
             type: tags

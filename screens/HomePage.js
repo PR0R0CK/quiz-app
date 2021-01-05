@@ -5,6 +5,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import HomeScreen from './HomeScreen';
 import TestScreen from './TestScreen';
 import ResultScreen from './ResultScreen';
+import NameScreen from './NameScreen';
 
 
 // function NotificationsScreen({ navigation }) {
@@ -20,7 +21,8 @@ const Drawer = createDrawerNavigator();
 export default function HomePage() {
     return (
         <NavigationContainer>
-            <Drawer.Navigator initialRouteName="Home">
+            <Drawer.Navigator initialRouteName="Start">
+                <Drawer.Screen name="Start" component={NameScreen} />
                 <Drawer.Screen name="Home" component={HomeScreen} />
                 <Drawer.Screen name="Test" component={TestScreen} />
                 <Drawer.Screen name="Result" component={ResultScreen} />
