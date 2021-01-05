@@ -4,6 +4,7 @@ import {
     AsyncStorage, TouchableOpacity
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import NetInfo from "@react-native-community/netinfo";
 
 
 // const test = [{
@@ -133,20 +134,17 @@ export default function TestScreen({ navigation, route }) {
         }
     }
 
+    const [loaded, setLoaded] = useState(true);
     useEffect(() => {
+        getData();
         loadNameFromAsync();
-    }, [])
-
+        setLoaded(true);
+    }, []);
 
     // console.log("###" + name);
     //
 
 
-    const [loaded, setLoaded] = useState(false);
-    useEffect(() => {
-        getData();
-        setLoaded(true);
-    });
 
     let isEnded = false;
 
@@ -199,14 +197,50 @@ export default function TestScreen({ navigation, route }) {
         // .finally(() => console.log("theTest"));
     };
 
-    const storeData = async (value) => {
+    // *saving data in AsyncStorage
+    const [testAsync, setTestAsync] = useState(theTesttt);
+    const saveTestInAsync = async () => {
         try {
-            const jsonValue = JSON.stringify(value)
-            await AsyncStorage.setItem('@storage_Key', jsonValue)
-        } catch (e) {
-            // saving error
+            // console.log(test);
+            let jsonValue = JSON.stringify(theTest);
+            // console.log("@@@" + jsonValue);
+            await AsyncStorage.setItem("Test", jsonValue);
+            if (jsonValue !== null) {
+                console.log("@@@" + jsonValue)
+            }
+        } catch (error) {
+            alert(error);
         }
     }
+
+    const loadTestFromAsync = async () => {
+        try {
+            let jsonValue = await AsyncStorage.getItem("Test");
+            if (jsonValue != null) {
+                setTestAsync(JSON.parse(jsonValue));
+            }
+        } catch (error) {
+            alert(error);
+        }
+    }
+    //*
+    NetInfo.fetch().then(state => {
+        console.log("Connection type", state.type);
+        console.log("Is connected?", state.isConnected);
+
+        if (state.isConnected) {
+            useEffect(() => {
+                getData();
+                saveTestInAsync();
+            }, [])
+        }
+    });
+
+    useEffect(() => {
+        // getData();
+        // // saveTestInAsync();
+        loadTestFromAsync();
+    }, []);
 
     // let questionDuration = theTest.tasks[questionNmbr].duration;
     let questionDuration = 5;
@@ -215,11 +249,6 @@ export default function TestScreen({ navigation, route }) {
     let question = theTest.tasks[questionNmbr].question;
     let everyAnswer = theTest.tasks[questionNmbr].answers;
     let tags = theTest.tags.join(',');
-
-
-
-
-
 
 
     const [score, setScore] = useState(0);
