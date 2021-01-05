@@ -23,7 +23,7 @@ const Item = ({ item, onPress, style }) => (
 export default function SelectableFlatList({ }) {
 
     const [test, setTest] = useState(null);
-    // const [testAsync, setTestAsync] = useState(null);
+    const [testAsync, setTestAsync] = useState(null);
 
     useEffect(() => {
         getData();
@@ -63,10 +63,10 @@ export default function SelectableFlatList({ }) {
             alert(error);
         }
     }
-    //*
+    //* checking internet connection
     // NetInfo.fetch().then(state => {
-    //     console.log("Connection type", state.type);
-    //     console.log("Is connected?", state.isConnected);
+    //     // console.log("Connection type", state.type);
+    //     // console.log("Is connected?", state.isConnected);
 
     //     if (state.isConnected) {
     //         useEffect(() => {
@@ -76,13 +76,13 @@ export default function SelectableFlatList({ }) {
     //     }
     // });
 
-    useEffect(() => {
-        // getData();
-        // // saveTestInAsync();
-        loadTestFromAsync();
-    }, []);
+    // useEffect(() => {
+    //     // getData();
+    //     // // saveTestInAsync();
+    //     loadTestFromAsync();
+    // }, []);
 
-    // console.log(testAsync);
+    // console.log("@" + testAsync);
 
 
     // const SelectableFlatList = ({ navigation }) => {
