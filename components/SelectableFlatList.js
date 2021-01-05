@@ -1,11 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import {
-    Alert, SafeAreaView, View, FlatList, StyleSheet, Text, StatusBar,
-    AsyncStorage, TouchableOpacity
-} from 'react-native';
+import { Alert, SafeAreaView, View, FlatList, StyleSheet, Text, StatusBar, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { BorderlessButton } from 'react-native-gesture-handler';
-import NetInfo from "@react-native-community/netinfo";
 
 
 function showAlert() {
@@ -23,8 +19,10 @@ const Item = ({ item, onPress, style }) => (
 export default function SelectableFlatList({ }) {
 
     const [test, setTest] = useState(null);
-    const [testAsync, setTestAsync] = useState(null);
 
+    useEffect(() => {
+        getData();
+    });
 
     function getData() {
         fetch('http://tgryl.pl/quiz/tests')
@@ -34,55 +32,6 @@ export default function SelectableFlatList({ }) {
             .finally(() => { });
         // .finally(() => console.log("test"));
     };
-
-    // *saving data in AsyncStorage
-    const saveTestInAsync = async () => {
-        try {
-            // console.log(test);
-            let jsonValue = JSON.stringify(test);
-            // console.log("@@@" + jsonValue);
-            await AsyncStorage.setItem("Tests", jsonValue);
-            if (jsonValue !== null) {
-                console.log("@@@" + jsonValue)
-            }
-        } catch (error) {
-            alert(error);
-        }
-    }
-
-    const loadTestFromAsync = async () => {
-        try {
-            let jsonValue = await AsyncStorage.getItem("Tests");
-            if (jsonValue != null) {
-                setTestAsync(JSON.parse(jsonValue));
-            }
-        } catch (error) {
-            alert(error);
-        }
-    }
-    //*
-    NetInfo.fetch().then(state => {
-        console.log("Connection type", state.type);
-        console.log("Is connected?", state.isConnected);
-
-        if (state.isConnected) {
-            useEffect(() => {
-                getData();
-                saveTestInAsync();
-            }, [])
-        }
-    });
-
-    useEffect(() => {
-        // getData();
-        // // saveTestInAsync();
-        loadTestFromAsync();
-    }, []);
-
-    // console.log(testAsync);
-
-
-
     // const SelectableFlatList = ({ navigation }) => {
     const navigation = useNavigation();
     const [selectedId, setSelectedId] = useState(null);
@@ -108,7 +57,7 @@ export default function SelectableFlatList({ }) {
     return (
         <SafeAreaView style={styles.container}>
             <FlatList
-                data={testAsync}
+                data={test}
                 renderItem={renderItem}
                 keyExtractor={(item) => item.id}
                 extraData={selectedId}

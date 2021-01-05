@@ -41,22 +41,19 @@ export default function NameScreen({ navigation }) {
 
     useEffect(() => {
         loadNameFromAsync();
-    }, []);
+    }, [])
 
 
     return (
         <View style={styles.container}>
             <View style={styles.header}>
-                <Text style={styles.title} >Welcome {name}</Text>
+                <Text style={styles.title} >Welcome</Text>
             </View>
 
             <View style={styles.containerBottom}>
                 <View style={styles.listContainer}>
                     <Text style={styles.name}>
                         Your name is set as: {name}
-                    </Text>
-                    <Text style={styles.name}>
-                        You can change your name below
                     </Text>
 
                     <TextInput style={styles.input}
