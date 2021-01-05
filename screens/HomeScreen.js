@@ -1,5 +1,5 @@
-import * as React from 'react';
-import { StyleSheet, Button, View, Text } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, Button, View, Text, AsyncStorage } from 'react-native';
 import SelectableFlatList from '../components/SelectableFlatList';
 
 
