@@ -1,11 +1,12 @@
 import * as React from 'react';
 import { StyleSheet, Button, View, Text } from 'react-native';
-import { createDrawerNavigator } from '@react-navigation/drawer';
+import { createDrawerNavigator, DrawerItem } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
 import HomeScreen from './HomeScreen';
 import TestScreen from './TestScreen';
 import ResultScreen from './ResultScreen';
 import NameScreen from './NameScreen';
+import UpdateTestsScreen from './UpdateTestsScreen';
 
 
 // function NotificationsScreen({ navigation }) {
@@ -26,6 +27,7 @@ export default function HomePage() {
                 <Drawer.Screen name="Home" component={HomeScreen} />
                 <Drawer.Screen name="Test" component={TestScreen} />
                 <Drawer.Screen name="Result" component={ResultScreen} />
+                <Drawer.Screen name="Update tests" component={UpdateTestsScreen} />
                 {/* <Drawer.Screen name="Notifications" component={NotificationsScreen} /> */}
             </Drawer.Navigator>
         </NavigationContainer>
