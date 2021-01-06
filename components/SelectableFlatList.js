@@ -26,7 +26,7 @@ export default function SelectableFlatList({ }) {
     const [testAsync, setTestAsync] = useState(null);
 
     useEffect(() => {
-        getData();
+        downloadData();
     });
 
     function getData() {
@@ -34,7 +34,7 @@ export default function SelectableFlatList({ }) {
             .then((response) => response.json())
             .then((json) => setTest(json))
             .catch((error) => console.error(error))
-            .finally(() => { });
+            .finally(() => saveTestInAsync());
         // .finally(() => console.log("test"));
     };
 
@@ -45,9 +45,9 @@ export default function SelectableFlatList({ }) {
             let jsonValue = JSON.stringify(test);
             // console.log("@@@" + jsonValue);
             await AsyncStorage.setItem("Tests", jsonValue);
-            if (jsonValue !== null) {
-                console.log("@@@" + jsonValue)
-            }
+            // if (jsonValue !== null) {
+            //     console.log("@@@" + jsonValue)
+            // }
         } catch (error) {
             alert(error);
         }
@@ -57,32 +57,27 @@ export default function SelectableFlatList({ }) {
         try {
             let jsonValue = await AsyncStorage.getItem("Tests");
             if (jsonValue != null) {
-                setTestAsync(JSON.parse(jsonValue));
+                setTestAsync(jsonValue);
+                console.log("TEST ASYNC" + testAsync);
             }
         } catch (error) {
             alert(error);
         }
     }
+
     //* checking internet connection
-    // NetInfo.fetch().then(state => {
-    //     // console.log("Connection type", state.type);
-    //     // console.log("Is connected?", state.isConnected);
-
-    //     if (state.isConnected) {
-    //         useEffect(() => {
-    //             getData();
-    //             saveTestInAsync();
-    //         }, [])
-    //     }
-    // });
-
-    // useEffect(() => {
-    //     // getData();
-    //     // // saveTestInAsync();
-    //     loadTestFromAsync();
-    // }, []);
-
-    // console.log("@" + testAsync);
+    function downloadData() {
+        NetInfo.fetch().then(state => {
+            // console.log("Connection type", state.type);
+            // console.log("Is connected?", state.isConnected);
+            if (state.isConnected) {
+                getData();
+                // loadTestFromAsync();
+            } else {
+                loadTestFromAsync();
+            }
+        })
+    }
 
 
     // const SelectableFlatList = ({ navigation }) => {
