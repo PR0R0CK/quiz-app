@@ -22,12 +22,19 @@ const Item = ({ item, onPress, style }) => (
 
 export default function SelectableFlatList({ }) {
 
+    const navigation = useNavigation();
+    const [selectedId, setSelectedId] = useState(null);
     const [test, setTest] = useState(null);
-    const [testAsync, setTestAsync] = useState(null);
 
     useEffect(() => {
-        downloadData();
-    });
+        const getStatusInterval = setInterval(() => {
+            downloadData();
+        }, 2000); // 86400000 - period of day in mili seconds
+
+        return () => {
+            clearInterval(getStatusInterval)
+        };
+    }, [test]);
 
     function getData() {
         fetch('http://tgryl.pl/quiz/tests')
@@ -41,48 +48,46 @@ export default function SelectableFlatList({ }) {
     // *saving data in AsyncStorage
     const saveTestInAsync = async () => {
         try {
-            // console.log(test);
             let jsonValue = JSON.stringify(test);
-            // console.log("@@@" + jsonValue);
-            await AsyncStorage.setItem("Tests", jsonValue);
-            // if (jsonValue !== null) {
-            //     console.log("@@@" + jsonValue)
-            // }
+            if (jsonValue !== null) {
+                await AsyncStorage.setItem("Tests", jsonValue);
+            }
         } catch (error) {
             alert(error);
         }
     }
 
+    // *loading data from AsyncStorage
     const loadTestFromAsync = async () => {
         try {
             let jsonValue = await AsyncStorage.getItem("Tests");
             if (jsonValue != null) {
-                setTestAsync(jsonValue);
-                console.log("TEST ASYNC" + testAsync);
+                setTest(JSON.parse(jsonValue));
+                console.log("TEST ASYNC" + test);
             }
         } catch (error) {
             alert(error);
         }
     }
 
-    //* checking internet connection
+    //* downloading data if is internet connection
+    //* else loading data from AsyncStorage
     function downloadData() {
         NetInfo.fetch().then(state => {
             // console.log("Connection type", state.type);
             // console.log("Is connected?", state.isConnected);
-            if (state.isConnected) {
+            if (state.type == 'wifi') {
+                // setInterval(() => {
+                console.log("Downloading data");
                 getData();
-                // loadTestFromAsync();
+                // }, 86400000);
             } else {
                 loadTestFromAsync();
+                console.log("Loaded data");
             }
         })
     }
 
-
-    // const SelectableFlatList = ({ navigation }) => {
-    const navigation = useNavigation();
-    const [selectedId, setSelectedId] = useState(null);
 
     const renderItem = ({ item }) => {
         const backgroundColor = item.id === selectedId ? "grey" : "orange";

@@ -8,7 +8,13 @@ export default function UpdateTestsScreen({ navigation }) {
     const [downloaded, setDownloaded] = useState(false);
 
     useEffect(() => {
-        downloadData();
+        const getStatusInterval = setInterval(() => {
+            downloadData();
+        }, 2000);
+
+        return () => {
+            clearInterval(getStatusInterval)
+        };
     });
 
     function getData() {
@@ -70,7 +76,8 @@ export default function UpdateTestsScreen({ navigation }) {
                 {downloaded ?
                     <Text style={styles.title} > Your tests has been updated !</Text>
                     :
-                    <Text style={styles.title} > There is no Internet connection !</Text>
+                    <Text style={styles.title} > Cannot update test now.
+                    Check your network connection..</Text>
                 }
             </View>
         </View>
