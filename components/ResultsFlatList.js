@@ -6,7 +6,7 @@ import {
 import NetInfo from "@react-native-community/netinfo";
 
 function showAlert() {
-    Alert.alert("Alert!!!");
+    Alert.alert("You choose this result!!!");
 }
 
 const wait = (timeout) => {
@@ -50,7 +50,7 @@ const ResultsFlatList = () => {
         return () => {
             clearInterval(getStatusInterval);
         };
-    });
+    }, [results]);
 
     function getData() {
         fetch('http://tgryl.pl/quiz/results')
