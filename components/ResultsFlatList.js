@@ -1,5 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Alert, SafeAreaView, View, FlatList, StyleSheet, Text, StatusBar, TouchableOpacity, RefreshControl } from 'react-native';
+import {
+    Alert, SafeAreaView, View, FlatList, StyleSheet, Text, StatusBar,
+    TouchableOpacity, RefreshControl, AsyncStorage
+} from 'react-native';
+import NetInfo from "@react-native-community/netinfo";
 
 function showAlert() {
     Alert.alert("Alert!!!");
@@ -35,9 +39,17 @@ const Item = ({ item, style }) => (
 
 const ResultsFlatList = () => {
     const [results, setResults] = useState(null);
+    const [selectedId, setSelectedId] = useState(null);
+    const [refreshing, setRefreshing] = useState(false);
 
     useEffect(() => {
-        getData();
+        const getStatusInterval = setInterval(() => {
+            downloadData();
+        }, 2000);
+
+        return () => {
+            clearInterval(getStatusInterval);
+        };
     });
 
     function getData() {
@@ -45,12 +57,51 @@ const ResultsFlatList = () => {
             .then((response) => response.json())
             .then((json) => setResults(json))
             .catch((error) => console.error(error))
-            .finally(() => { });
+            .finally(() => saveTestInAsync());
         // .finally(() => console.log(results));
     };
 
+    // *saving data in AsyncStorage
+    const saveTestInAsync = async () => {
+        try {
+            let jsonValue = JSON.stringify(results);
+            if (jsonValue !== null) {
+                await AsyncStorage.setItem("Results", jsonValue);
+            }
+        } catch (error) {
+            alert(error);
+        }
+    }
 
-    const [selectedId, setSelectedId] = useState(null);
+    // *loading data from AsyncStorage
+    const loadTestFromAsync = async () => {
+        try {
+            let jsonValue = await AsyncStorage.getItem("Results");
+            if (jsonValue != null) {
+                setResults(JSON.parse(jsonValue));
+                console.log("TEST ASYNC" + results);
+            }
+        } catch (error) {
+            alert(error);
+        }
+    }
+
+    //* downloading data if is internet connection
+    //* else loading data from AsyncStorage
+    function downloadData() {
+        NetInfo.fetch().then(state => {
+            // console.log("Connection type", state.type);
+            // console.log("Is connected?", state.isConnected);
+            if (state.type == 'wifi') {
+                console.log("Downloading data");
+                getData();
+            } else {
+                loadTestFromAsync();
+                console.log("Loaded data");
+            }
+        })
+    }
+
 
     const renderItem = ({ item }) => {
         const backgroundColor = item.id === selectedId ? "grey" : "orange";
@@ -64,7 +115,7 @@ const ResultsFlatList = () => {
         );
     };
 
-    const [refreshing, setRefreshing] = useState(false);
+
     const onRefresh = React.useCallback(() => {
         setRefreshing(true);
 
