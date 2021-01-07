@@ -122,6 +122,7 @@ let questionnNmbr = 0;
 export default function TestScreen({ navigation, route }) {
     // *getting name from AsyncStorage
     const [name, setName] = useState();
+
     const loadNameFromAsync = async () => {
         try {
             let name = await AsyncStorage.getItem("MyName");
